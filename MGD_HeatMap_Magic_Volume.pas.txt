@@ -1,0 +1,55 @@
+// HeatMap Magic Volume
+// Author: CAPC-MEGADROM
+// Caros, transcodei um indicador do Tryd que vi neste vídeo:
+// https://youtu.be/l9A3jcN-Ev4
+
+
+input
+  len(60);
+  red(3.5);
+  orange(2.5);
+  yellow(1.5);
+  white(0.5);
+
+var
+  mean    : Float;
+  res     : Float;
+
+  idx     : Integer;
+  i       : Integer;
+
+  nIdx    : Integer;
+  nResult : Float;
+begin
+
+  nResult := 0;
+  for nIdx := 0 to len - 1 do
+  begin
+    nResult := nResult + VOLUME[nIdx];
+  end;
+  
+  mean := nResult / len;
+
+  for idx := 0 to len-1 do
+  begin
+    i := len-idx-1;
+
+    if (i<len) then 
+      	res:= VOLUME[i] / mean[i+len];
+
+      if (res > red) then
+        PaintBar(RGB(255,0,0))
+      else if (res > orange) then 
+        PaintBar(RGB(255,128,0))
+      else if (res > yellow) then 
+        PaintBar(RGB(255,244,0))
+      else if (res > white) then
+        PaintBar(RGB(255,255,255))
+      else
+        PaintBar(RGB(0,255,252));
+      end;
+    end;
+
+  end;  
+
+end;
